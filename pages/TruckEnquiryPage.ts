@@ -68,11 +68,11 @@ export class TruckEnquiryPage extends BasePage {
    */
   public static async clickProfileAvatarButton(page:Page): Promise<void> {
     const avatar = TruckEnquiryPage.profileAvatar;
-    const profileMenu = TruckEnquiryPage.myProfile;
 
     await avatar.click();
 
-    await profileMenu.first().waitFor({
+    // Wait for the profile dropdown to open (the container gains 'open' class)
+    await TruckEnquiryPage.profileDetailsPopup.waitFor({
       state: 'visible',
       timeout: 5000,
     });

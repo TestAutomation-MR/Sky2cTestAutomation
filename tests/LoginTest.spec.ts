@@ -13,7 +13,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginTestPage } from '../pages/LoginTestPage';
 import { TruckEnquiryPage } from '../pages/TruckEnquiryPage';
-import { TestConfig } from '../test.config';  
+import { TestConfig } from '../test.config';
 
 let config: TestConfig;
 
@@ -37,29 +37,29 @@ test.afterEach(async ({ page }) => {
 });
 
 
-test('TC01:User login test @regression',async({ page })=>{    
-     // Assert that the URL is exactly as expected
-    expect(page.url()).toBe('https://quote.sky2c.com/login'); 
-    //click on dropdown and select country code USA
-     await LoginTestPage.selectCountryCodeUSA();
-     //enter phone number
-     await LoginTestPage.enterMobileNumber('6157635478');
-     //click on login securely button
-     await LoginTestPage.clickLoginSecurelyButton();
-     //enter OTP
-     await LoginTestPage.enterOTP('6512');
-     await LoginTestPage.clickVerifyOTPButton();
-     //check if login successfully message is present
-     const isLoginSuccessfullyMsgPresent = await LoginTestPage.validateSuccessfulLoginMessage("Login Successful");
-     expect(isLoginSuccessfullyMsgPresent).toBe(true);
+test('TC01:User login test @regression', async ({ page }) => {
+  // Assert that the URL is exactly as expected
+  expect(page.url()).toBe('https://quote.sky2c.com/login');
+  //click on dropdown and select country code USA
+  await LoginTestPage.selectCountryCodeUSA();
+  //enter phone number
+  await LoginTestPage.enterMobileNumber('6157635478');
+  //click on login securely button
+  await LoginTestPage.clickLoginSecurelyButton();
+  //enter OTP
+  await LoginTestPage.enterOTP('6512');
+  await LoginTestPage.clickVerifyOTPButton();
+  //check if login successfully message is present
+  const isLoginSuccessfullyMsgPresent = await LoginTestPage.validateSuccessfulLoginMessage("Login Successful");
+  expect(isLoginSuccessfullyMsgPresent).toBe(true);
 
 }
 )
 
-test('TC01:User login test and validate that OTP/Verify button is enabled or not and check the login successful message @regression',async({ page })=>{    
+test('TC01:User login test and validate that OTP/Verify button is enabled or not and check the login successful message @regression', async ({ page }) => {
   // Assert that the URL is exactly as expected
- expect(page.url()).toBe('https://quote.sky2c.com/login'); 
- //click on dropdown and select country code USA
+  expect(page.url()).toBe('https://quote.sky2c.com/login');
+  //click on dropdown and select country code USA
   await LoginTestPage.selectCountryCodeUSA();
   //check login button is disabled
   const loginBtnStatus = await LoginTestPage.isLoginButtonEnabled();
@@ -89,13 +89,13 @@ test('TC01:User login test and validate that OTP/Verify button is enabled or not
   console.log('Actual URL after login:', page.url());
   expect(page.url()).toContain(config.truckUrl);
   //verfiying prifile avatar is visible or not
-  const isAvatarVisible=await TruckEnquiryPage.verifyProfileAvatarVisible();
+  const isAvatarVisible = await TruckEnquiryPage.verifyProfileAvatarVisible();
   expect(isAvatarVisible).toBe(true);
   // Click on profile avatar button
   await TruckEnquiryPage.clickProfileAvatarButton(page);
   // click on logout button
   await TruckEnquiryPage.clickOnLogout(page);
   // Assert that the URL is exactly as expected
- expect(page.url()).toBe('https://quote.sky2c.com/login'); 
+  expect(page.url()).toBe('https://quote.sky2c.com/login');
 }
 )

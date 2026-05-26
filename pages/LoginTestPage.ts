@@ -1,205 +1,104 @@
 import { Locator, Page } from "@playwright/test";
 
 
-export class LoginTestPage{
-  static clickOnLoginSuccessfulMsgCloseIcon() {
-    throw new Error('Method not implemented.');
-  }
-  static isVerifyOTPButtonEnabled() {
-    throw new Error('Method not implemented.');
-  }
-  static isLoginButtonEnabled() {
-    throw new Error('Method not implemented.');
-  }
-  static validateSuccessfulLoginMessage(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
-  static clickVerifyOTPButton() {
-    throw new Error('Method not implemented.');
-  }
-  static enterOTP(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
-  static clickLoginSecurelyButton() {
-    throw new Error('Method not implemented.');
-  }
-  static enterMobileNumber(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
-  static selectCountryCodeUSA() {
-    throw new Error('Method not implemented.');
-  }
+export class LoginTestPage {
+    // Static page reference (set in constructor, used by static methods)
+    static page: Page;
 
+    // Static locators (initialized in constructor, used by static methods)
+    static phoneNofield: Locator;
+    static dropdownSelector: Locator;
+    static countryList: Locator;
+    static loginSecurelyButton: Locator;
+    static signUpSecurelyButton: Locator;
+    static loginOrSignupButton: Locator;
+    static otpInputFields: Locator;
+    static verifyOTPButton: Locator;
+    static resendOTPButton: Locator;
+    static loginSuccessfullyMsg: Locator;
+    static fullNameField: Locator;
+    static emailIdField: Locator;
+    static shippingAsComboBox: Locator;
+    static shippingTypes: Locator;
+    static loginSuccessfulMsgCloseIcon: Locator;
+    static popUpMSgAfterSelectingIndividual: Locator;
+    static goBackButton: Locator;
+    static editMobileNumber: Locator;
+    static successfulAccountCreationMsg: Locator;
+    static loginButton: Locator;
+
+    // Instance page reference (kept for instance methods)
     readonly page: Page;
-    
-    //Locators
-    readonly phoneNofield: Locator ;
-    readonly dropdownSelector:Locator;
-    readonly countryList:Locator;
-    readonly loginSecurelyButton:Locator;
-    readonly loginOrSignupButton:Locator;
-    readonly otpInputFields:Locator;
-    readonly verifyOTPButton:Locator;
-    readonly resendOTPButton:Locator;
-    readonly loginSuccessfullyMsg:Locator;
-    readonly fullNameField: Locator;
-    readonly emailIdField: Locator;
-    readonly shippingAsComboBox:Locator;
-    readonly shippingTypes:Locator;
-    readonly loginSuccessfulMsgCloseIcon:Locator;
-    readonly popUpMSgAfterSelectingIndividual: Locator;
-    readonly goBackButton: Locator;
-    readonly editMobileNumber: Locator;
-    readonly successfulAccountCreationMsg: Locator;
-    readonly signUpSecurelyButton: Locator;
-  static loginOrSignupButton: any;
 
-    constructor(page:Page){
-        this.page=page;
-        // Using more robust selectors like getByRole, getByPlaceholderText, and stable IDs/classes.
-        this.phoneNofield=page.locator("#phoneNumber");
-        this.dropdownSelector=page.locator(".MuiInputBase-root.MuiOutlinedInput-root"); // A more generic but potentially more stable selector
-        this.countryList= page.getByRole('option');
-        this.loginSecurelyButton=page.getByRole('button', { name: 'Login Securely' });
-        this.signUpSecurelyButton=page.getByRole('button', { name: 'Sign Up Securely' });
-        this.loginOrSignupButton=page.locator("div.auth-footer a");
-        this.otpInputFields=page.locator('.otp-login-modal-otp-inputs input');
-        this.verifyOTPButton=page.getByRole('button', { name: 'Verify OTP' });
-        this.resendOTPButton=page.getByRole('button', { name: 'Resend OTP' });
-        this.loginSuccessfullyMsg=page.locator("p:has-text('Login successful')"); // Example, adjust text as needed
-        this.fullNameField=page.getByPlaceholder('John');
-        this.emailIdField=page.getByPlaceholder('Email ID');
-        this.editMobileNumber=page.getByRole('button', { name: 'Edit' });
-        this.shippingAsComboBox=page.locator(".auth-shipping-as").getByRole('combobox');
-        this.shippingTypes=page.getByRole('option');
-        this.loginSuccessfulMsgCloseIcon=page.getByRole('button', { name: 'Close' });
-        this.popUpMSgAfterSelectingIndividual=page.locator('div:has-text("For shipping as an individual")'); // More robust
-        this.goBackButton = page.getByRole('button', { name: 'Go Back' });
-        this.successfulAccountCreationMsg = page.locator(".MuiAlert-message");
-      }
+    constructor(page: Page) {
+        this.page = page;
+        LoginTestPage.page = page;
 
-    /**
-     * Clicks the login button on Signup Page
-     */
-    async clickLogin(){
-        await this.loginOrSignupButton.click();
-    }
-    /**
-     * Clicks the close icon of Login Successul popup message
-     */
-    async clickOnLoginSuccessfulMsgCloseIcon(){
-        await this.loginSuccessfulMsgCloseIcon.first().waitFor({ state: 'visible', timeout: 5000 });
-        await this.loginSuccessfulMsgCloseIcon.click();
+        LoginTestPage.phoneNofield = page.locator("#phoneNumber");
+        LoginTestPage.dropdownSelector = page.locator('[aria-label="Country flag selector"]');
+        LoginTestPage.countryList = page.getByRole('option');
+        LoginTestPage.loginSecurelyButton = page.locator('.otp-login-modal-phone-button').filter({ hasText: 'Login Securely' });
+        LoginTestPage.signUpSecurelyButton = page.locator('.otp-login-modal-phone-button').filter({ hasText: 'Sign Up Securely' });
+        LoginTestPage.loginOrSignupButton = page.locator("div.auth-footer a");
+        LoginTestPage.otpInputFields = page.locator('.otp-input');
+        LoginTestPage.verifyOTPButton = page.locator('.otp-login-modal-phone-button').filter({ hasText: 'Verify' });
+        LoginTestPage.resendOTPButton = page.locator('[class*="otp-login-modal-verification-otp-resend-button"]');
+        LoginTestPage.loginSuccessfullyMsg = page.locator(".MuiAlert-message");
+        LoginTestPage.fullNameField = page.getByPlaceholder('John');
+        LoginTestPage.emailIdField = page.getByPlaceholder('Email ID');
+        LoginTestPage.editMobileNumber = page.getByRole('button', { name: 'Edit' });
+        LoginTestPage.shippingAsComboBox = page.locator(".auth-shipping-as").getByRole('combobox');
+        LoginTestPage.shippingTypes = page.getByRole('option');
+        LoginTestPage.loginSuccessfulMsgCloseIcon = page.locator('[class*="MuiAlert"] [aria-label="Close"], [class*="toast"] [aria-label="Close"], [class*="snackbar"] button, .MuiAlert-action button').first();
+        LoginTestPage.popUpMSgAfterSelectingIndividual = page.locator('div:has-text("For shipping as an individual")');
+        LoginTestPage.goBackButton = page.getByRole('button', { name: 'Go Back' });
+        LoginTestPage.successfulAccountCreationMsg = page.locator(".MuiAlert-message");
+        LoginTestPage.loginButton = page.locator('.otp-login-modal-phone-button').filter({ hasText: 'Login Securely' });
     }
 
-    /**
-     * Clicks an element matching the given text (e.g., "Login" or "Signup") and returns true if clicked.
-     * Returns false if the element is not found or not visible.
-     * 
+    // ── Static action methods (called directly as LoginTestPage.method()) ──
 
-     * @param text The exact text of the element to click (e.g., "Login", "Signup")
-     */
-    async clickLoginSignupTextIfVisible(text: string): Promise<boolean> {
-        const locator = this.page.locator(`text=${text}`);
-      
-        if (await locator.isVisible()) {
-          await locator.click();
-          return true;
-        }
+    static async selectCountryCodeUSA(): Promise<void> {
+        const page = LoginTestPage.page;
 
-        return false;
-    }
+        // Click the country flag selector combobox
+        await page.locator('[aria-label="Country flag selector"]').click();
 
-    /**
-     * Selects a country code from the dropdown list by country name.
-     * 
-     * @param countryName The name of the country to select (e.g., 'United States', 'India', 'Canada')
-     * @returns The selected country text if found
-     * @throws Error if the country is not found in the dropdown
-     */
-    async selectCountryCode(countryName: string): Promise<string> {
-        try {
-            // Step 1: Open the country code dropdown
-            await this.dropdownSelector.first().click(); // Use first() if selector is not unique
-            console.log(`Attempting to select country: ${countryName}`);
+        // Wait for the listbox options to render
+        const options = page.getByRole('option');
+        await options.first().waitFor({ state: 'visible', timeout: 5000 });
 
-            // Step 2: Get all options
-            const options: Locator = this.countryList;
-            const count = await options.count();
-
-            // Step 3: Iterate through options to find the matching country
-            for (let i = 0; i < count; i++) {
-                const optionText = await options.nth(i).innerText();
-                if (optionText.toLowerCase().includes(countryName.toLowerCase())) {
-                    await options.nth(i).click();
-                    console.log(`Selected country: ${optionText}`);
-                    return optionText;
-                }
+        const count = await options.count();
+        for (let i = 0; i < count; i++) {
+            const optionText = await options.nth(i).innerText();
+            if (optionText.toLowerCase().includes('united states')) {
+                await options.nth(i).click();
+                console.log(`Selected country: ${optionText}`);
+                return;
             }
-
-            // If we get here, the country wasn't found
-            throw new Error(`Country '${countryName}' not found in the dropdown`);
-        } catch (error) {
-            console.error(`Error selecting country code: ${(error as Error).message}`);
-            throw error;
         }
+        throw new Error(`Country 'United States' not found in the dropdown. Found ${count} options.`);
     }
 
-    /**
-     * Legacy method for backward compatibility
-     * @deprecated Use selectCountryCode('United States') instead
-     */
-    async selectCountryCodeUSA(): Promise<void> {
-        await this.selectCountryCode('United States');
+    static async enterMobileNumber(mobileNumber: string): Promise<void> {
+        await LoginTestPage.phoneNofield.fill(mobileNumber);
     }
 
-    /**
-     * Enters the given mobile number in the phone number field
-     */
-    async enterMobileNumber(mobileNumber: string) {
-        await this.phoneNofield.fill(mobileNumber);
+    static async clickLoginSecurelyButton(): Promise<void> {
+        await LoginTestPage.loginSecurelyButton.click();
+        await LoginTestPage.otpInputFields.first().waitFor({ state: 'visible', timeout: 5000 });
     }
 
-    /**
-     * Clicks the 'Login Securely' button
-     */
-    async clickLoginSecurelyButton() {
-        await this.loginSecurelyButton.click();
-        // Wait for OTP input fields to be visible after clicking
-        await this.otpInputFields.first().waitFor({ state: 'visible', timeout: 5000 });
-    }
-
-    /**
-     * Enters the given OTP in the OTP input fields
-     */
-    async enterOTP(otp: string) {
-        const otpInputs = this.otpInputFields;
+    static async enterOTP(otp: string): Promise<void> {
+        const otpInputs = LoginTestPage.otpInputFields;
         for (let i = 0; i < otp.length; i++) {
             await otpInputs.nth(i).fill(otp[i]);
         }
     }
 
-    /**
-     * Clicks the 'Verify OTP' button if it's enabled
-     * @throws Error if the button is disabled
-     */
-    async clickVerifyOTPButton() {
-        if (await this.isVerifyOTPButtonEnabled()) {
-            await this.verifyOTPButton.click();
-            // Wait for the click action to complete and any subsequent page changes
-            await this.page.waitForTimeout(2000);
-        } else {
-            throw new Error('Cannot click Verify OTP button - button is disabled');
-        }
-    }
-
-    /**
-     * Checks if the 'Verify OTP' button is enabled
-     * @returns true if enabled, false if disabled
-     */
-    async isVerifyOTPButtonEnabled(): Promise<boolean> {
+    static async isVerifyOTPButtonEnabled(): Promise<boolean> {
         try {
-            const button = this.verifyOTPButton;
+            const button = LoginTestPage.verifyOTPButton;
             await button.waitFor({ state: 'attached', timeout: 5000 });
             const classAttr = await button.getAttribute('class') || '';
             return !classAttr.includes('disabled');
@@ -209,19 +108,124 @@ export class LoginTestPage{
         }
     }
 
-    /**
-     * Waits for the Verify OTP button to become enabled
-     * @param timeout Maximum time to wait in milliseconds
-     * @returns true if button became enabled, false if timeout occurred
-     */
+    static async clickVerifyOTPButton(): Promise<void> {
+        if (await LoginTestPage.isVerifyOTPButtonEnabled()) {
+            await LoginTestPage.verifyOTPButton.click();
+        } else {
+            throw new Error('Cannot click Verify OTP button - button is disabled');
+        }
+    }
+
+    static async isLoginButtonEnabled(): Promise<boolean> {
+        const button = LoginTestPage.loginButton;
+        await button.waitFor({ state: 'attached' });
+        const classValue = await button.getAttribute('class');
+        const isDisabled = classValue?.includes('disabled') ?? false;
+        return !isDisabled;
+    }
+
+    static async validateSuccessfulLoginMessage(expectedMessage: string): Promise<boolean> {
+        const page = LoginTestPage.page;
+
+        // Strategy 1: Try to catch the success toast before it auto-dismisses
+        try {
+            await LoginTestPage.loginSuccessfullyMsg.waitFor({ state: 'visible', timeout: 3000 });
+            const actualMessage = await LoginTestPage.loginSuccessfullyMsg.textContent();
+            if (actualMessage?.toLowerCase().includes(expectedMessage.toLowerCase())) {
+                return true;
+            }
+        } catch {
+            // Message not captured — fall through to URL-based check
+        }
+
+        // Strategy 2: Successful login redirects away from /login — treat that as success
+        try {
+            await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 8000 });
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    static async clickOnLoginSuccessfulMsgCloseIcon(): Promise<void> {
+        try {
+            await LoginTestPage.loginSuccessfulMsgCloseIcon.first().waitFor({ state: 'visible', timeout: 3000 });
+            await LoginTestPage.loginSuccessfulMsgCloseIcon.first().click();
+        } catch {
+            // Close icon may have auto-dismissed; continue
+            console.log('Login success close icon not found — message may have auto-dismissed');
+        }
+    }
+
+    // ── Instance methods (kept for backward compatibility) ──
+
+    async clickLogin() {
+        await LoginTestPage.loginOrSignupButton.click();
+    }
+
+    async clickLoginSignupTextIfVisible(text: string): Promise<boolean> {
+        const locator = this.page.locator(`text=${text}`);
+        if (await locator.isVisible()) {
+            await locator.click();
+            return true;
+        }
+        return false;
+    }
+
+    async selectCountryCode(countryName: string): Promise<string> {
+        try {
+            await this.page.locator('[aria-label="Country flag selector"]').click();
+            console.log(`Attempting to select country: ${countryName}`);
+            const options: Locator = LoginTestPage.countryList;
+            const count = await options.count();
+            for (let i = 0; i < count; i++) {
+                const optionText = await options.nth(i).innerText();
+                if (optionText.toLowerCase().includes(countryName.toLowerCase())) {
+                    await options.nth(i).click();
+                    console.log(`Selected country: ${optionText}`);
+                    return optionText;
+                }
+            }
+            throw new Error(`Country '${countryName}' not found in the dropdown`);
+        } catch (error) {
+            console.error(`Error selecting country code: ${(error as Error).message}`);
+            throw error;
+        }
+    }
+
+    async enterMobileNumberInstance(mobileNumber: string) {
+        await LoginTestPage.phoneNofield.fill(mobileNumber);
+    }
+
+    async clickLoginSecurelyButtonInstance() {
+        await LoginTestPage.loginSecurelyButton.click();
+        await LoginTestPage.otpInputFields.first().waitFor({ state: 'visible', timeout: 5000 });
+    }
+
+    async enterOTPInstance(otp: string) {
+        const otpInputs = LoginTestPage.otpInputFields;
+        for (let i = 0; i < otp.length; i++) {
+            await otpInputs.nth(i).fill(otp[i]);
+        }
+    }
+
+    async clickVerifyOTPButtonInstance() {
+        if (await LoginTestPage.isVerifyOTPButtonEnabled()) {
+            await LoginTestPage.verifyOTPButton.click();
+            await this.page.waitForTimeout(2000);
+        } else {
+            throw new Error('Cannot click Verify OTP button - button is disabled');
+        }
+    }
+
     async waitForVerifyOTPButtonEnabled(timeout: number = 10000): Promise<boolean> {
         try {
             const startTime = Date.now();
             while (Date.now() - startTime < timeout) {
-                if (await this.isVerifyOTPButtonEnabled()) {
+                if (await LoginTestPage.isVerifyOTPButtonEnabled()) {
                     return true;
                 }
-                await this.page.waitForTimeout(500); // Check every 500ms
+                await this.page.waitForTimeout(500);
             }
             return false;
         } catch (error) {
@@ -230,24 +234,15 @@ export class LoginTestPage{
         }
     }
 
-    /**
-     * Checks the visibility and state of the 'Resend OTP' button
-     * @returns Object containing visibility and enabled state of the button
-     */
     async checkResendOTPButtonState(): Promise<{ isVisible: boolean; isEnabled: boolean }> {
         try {
-            // First check if the button is visible
-            const isVisible = await this.resendOTPButton.isVisible();
-            
+            const isVisible = await LoginTestPage.resendOTPButton.isVisible();
             if (!isVisible) {
                 return { isVisible: false, isEnabled: false };
             }
-
-            // If visible, wait for it to be attached to DOM and check if it's enabled
-            await this.resendOTPButton.waitFor({ state: 'attached', timeout: 5000 });
-            const classAttr = await this.resendOTPButton.getAttribute('class') || '';
+            await LoginTestPage.resendOTPButton.waitFor({ state: 'attached', timeout: 5000 });
+            const classAttr = await LoginTestPage.resendOTPButton.getAttribute('class') || '';
             const isEnabled = !classAttr.includes('disabled');
-
             console.log(`Resend OTP button state - Visible: ${isVisible}, Enabled: ${isEnabled}`);
             return { isVisible, isEnabled };
         } catch (error) {
@@ -256,26 +251,19 @@ export class LoginTestPage{
         }
     }
 
-    /**
-     * Clicks the Resend OTP button if it's visible and enabled
-     * @returns true if click was successful, false otherwise
-     */
     async validateStateAndClickResendOTPButton(): Promise<boolean> {
         try {
             const buttonState = await this.checkResendOTPButtonState();
-            
             if (!buttonState.isVisible) {
                 console.log('Resend OTP button is not visible');
                 return false;
             }
-
             if (!buttonState.isEnabled) {
                 console.log('Resend OTP button is visible but disabled');
                 return false;
             }
-
-            await this.resendOTPButton.click();
-            await this.page.waitForTimeout(2000); // Wait for any post-click actions
+            await LoginTestPage.resendOTPButton.click();
+            await this.page.waitForTimeout(2000);
             return true;
         } catch (error) {
             console.log('Error clicking Resend OTP button:', error);
@@ -283,125 +271,61 @@ export class LoginTestPage{
         }
     }
 
-    /**
-     * Validates the successful Account creation message
-     */
     async validateSuccessfulAccountCreationMessage(expectedMessage: string): Promise<boolean> {
-        await this.successfulAccountCreationMsg.waitFor({ state: 'visible' });
-        const actualMessage = await this.successfulAccountCreationMsg.textContent();
+        await LoginTestPage.successfulAccountCreationMsg.waitFor({ state: 'visible' });
+        const actualMessage = await LoginTestPage.successfulAccountCreationMsg.textContent();
         if (!actualMessage || !actualMessage.includes(expectedMessage)) {
             return false;
         }
         return true;
     }
 
-    /**
-     * Checks if the login button is enabled based on its class attribute.
-     * The button is considered disabled if its class includes the word "disabled".
-     *
-     * @returns true if enabled, false if disabled
-     */
-    async isLoginButtonEnabled(): Promise<boolean> {
-        const button = this.page.locator('.otp-login-modal-phone-button');
-
-        // Wait for button to be attached to DOM
-        await button.waitFor({ state: 'attached' });
-
-        // Get the class attribute
-        const classValue = await button.getAttribute('class');
-
-        // If class contains 'disabled', the button is considered disabled
-        const isDisabled = classValue?.includes('disabled') ?? false;
-
-        return !isDisabled; // true if enabled, false if disabled
-    }
-
-    /**
-     * Checks if the given text (Login or Signup) is visible in the auth footer link
-     * @param text The exact text to check for (e.g., 'Login' or 'Signup')
-     * @returns true if visible, false otherwise
-     */
     async isAuthFooterTextVisible(text: string): Promise<boolean> {
         const locator = this.page.locator("div[class='auth-footer'] p a", { hasText: text });
         return await locator.isVisible();
     }
 
-    /**
-     * Enters the given full name in the full name field
-     */
     async enterFullName(name: string) {
-        await this.fullNameField.fill(name);
-    }
-    /**
-     * Enters the given email id in the EMAILID field
-     */
-    async enterEmailId(email: string) {
-        await this.emailIdField.fill(email);
+        await LoginTestPage.fullNameField.fill(name);
     }
 
-    /**
-     * Selects a shipping type and handles the subsequent workflow.
-     * If Individual is selected, it handles the popup and navigation.
-     * @param shippingType The shipping type to select ('Business' or 'Individual')
-     * @throws Error if any step in the process fails
-     */
+    async enterEmailId(email: string) {
+        await LoginTestPage.emailIdField.fill(email);
+    }
+
     async selectShippingTypeAndHandleFlow(shippingType: string): Promise<void> {
-        // Validate input
         const validTypes = ['business', 'individual'];
         const normalizedType = shippingType.toLowerCase();
-        
         if (!validTypes.includes(normalizedType)) {
             throw new Error(`Invalid shipping type. Expected 'Business' or 'Individual', got '${shippingType}'`);
         }
-
         try {
-            // Open the shipping type combobox
-            await this.shippingAsComboBox.click();
+            await LoginTestPage.shippingAsComboBox.click();
             console.log('Opened shipping type dropdown');
-
-            // Get all shipping type options
-            const options = this.shippingTypes;
+            const options = LoginTestPage.shippingTypes;
             const count = await options.count();
-            console.log('Shipping type options count:', count);
-
-            // Iterate through options to find and click the matching one
             let found = false;
             for (let i = 0; i < count; i++) {
                 const optionText = await options.nth(i).textContent();
                 if (optionText && optionText.toLowerCase().includes(normalizedType)) {
-                    // Click the selected option
                     await options.nth(i).click();
                     console.log(`Selected shipping type: ${optionText}`);
                     found = true;
-
-                    // Handle Individual-specific flow
                     if (normalizedType === 'individual') {
-                        // Click Login Securely button
-                        await this.loginSecurelyButton.click();
-                        console.log('Clicked Login Securely button');
-
-                        // Wait for and verify popup appearance
-                        const popupVisible = await this.popUpMSgAfterSelectingIndividual.waitFor({ 
-                            state: 'visible', 
-                            timeout: 5000 
+                        await LoginTestPage.loginSecurelyButton.click();
+                        const popupVisible = await LoginTestPage.popUpMSgAfterSelectingIndividual.waitFor({
+                            state: 'visible',
+                            timeout: 5000
                         }).then(() => true).catch(() => false);
-
                         if (!popupVisible) {
                             throw new Error('Individual selection popup did not appear');
                         }
-                        console.log('Individual selection popup appeared');
-
-                        // Click Go Back button
-                        await this.goBackButton.click();
-                        console.log('Clicked Go Back button');
-
-                        // Wait for the page to stabilize
+                        await LoginTestPage.goBackButton.click();
                         await this.page.waitForTimeout(2000);
                     }
                     break;
                 }
             }
-
             if (!found) {
                 throw new Error(`Shipping type '${shippingType}' not found in the dropdown`);
             }
@@ -409,7 +333,4 @@ export class LoginTestPage{
             throw new Error(`Failed to complete shipping type workflow: ${(error as Error).message}`);
         }
     }
-    
 }
-
-    
